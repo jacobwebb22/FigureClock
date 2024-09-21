@@ -1,0 +1,133 @@
+<!-- Author: w3schools.in
+URL: https://www.w3schools.in/javascript/examples/analog-clock-html-css-js
+license: Free to use without republishing.
+https://www.w3schools.in/page/copyright -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analog Clock (HTML, CSS, and JS) Demo</title>
+    <style>
+        #clock-container {
+            /*position: relative;*/
+            display: flex;
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            
+            position: absolute;
+            margin: 0;
+    
+           top: 50%;
+           left: 50%;
+           -ms-transform: translate(-50%, -50%);
+           transform: translate(-50%, -50%);
+        }
+        #clock {
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background-color: #1c2731;
+            /*background: radial-gradient(ellipse, #506068, #1c2731);*/
+            background: linear-gradient(170deg, rgba(49, 57, 73, 0.8) 20%, rgba(49, 57, 73, 0.5) 20%, rgba(49, 57, 73, 0.5) 35%, rgba(41, 48, 61, 0.6) 35%, rgba(41, 48, 61, 0.8) 45%, rgba(31, 36, 46, 0.5) 45%, rgba(31, 36, 46, 0.8) 75%, rgba(49, 57, 73, 0.5) 75%), linear-gradient(45deg, rgba(20, 24, 31, 0.8) 0%, rgba(41, 48, 61, 0.8) 50%, rgba(82, 95, 122, 0.8) 50%, rgba(133, 146, 173, 0.8) 100%) #313949;
+        }
+        #clock span {
+            position: absolute;
+            transform: rotate(calc(30deg * var(--i)));
+            inset: 12px;
+            text-align: center;
+            font-family: sans-serif;
+        }
+        #clock span i {
+            transform: rotate(calc(-30deg * var(--j)));
+            display: inline-block;
+            font-size: 20px;
+            font-style: normal;
+            text-shadow: 1px 1px 0px rgb(0 0 0 / 25%);
+            color: #ffffff;
+        }
+        #clock::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #fff;
+            z-index: 2;
+            opacity: 0.6;
+        }
+        #clock .hand {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        #clock .hand i {
+            position: absolute;
+            background-color: var(--color);
+            width: var(--width);
+            height: var(--height);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="clock-container">
+            <div id="clock">
+                <div id="hour" class="hand" style="--color: #ff3d58; --height: 250px; --width: 22px"><i></i></div>
+                <div id="minute" class="hand" style="--color: #00a6ff; --height: 320px; --width: 18px"><i></i></div>
+                <div id="second" class="hand" style="--color: #ffffff; --height: 380px; --width: 12px"><i></i></div>
+                <span style="--i: 1; --j: 0"><i>|</i></span>
+                <span style="--i: 2; --j: 0"><i>|</i></span>
+                <span style="--i: 3; --j: 3"><i>3</i></span>
+                <span style="--i: 4; --j: 0"><i>|</i></span>
+                <span style="--i: 5; --j: 0"><i>|</i></span>
+                <span style="--i: 6; --j: 6"><i>6</i></span>
+                <span style="--i: 7; --j: 0"><i>|</i></span>
+                <span style="--i: 8; --j: 0"><i>|</i></span>
+                <span style="--i: 9; --j: 9"><i>9</i></span>
+                <span style="--i: 10; --j: 0"><i>|</i></span>
+                <span style="--i: 11; --j: 0"><i>|</i></span>
+                <span style="--i: 12; --j: 12"><i>12</i></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const second = now.getSeconds() * 6;
+            const minute = now.getMinutes();
+            const hour = now.getHours();
+            const smooth_scale = 1;
+            const total_millis = now.getTime();
+            const millis  = total_millis % 1000;
+            const tick = millis / 1000.0 * 6.0;
+            
+            /*
+            document.getElementById('hour').style.transform = `rotate(${30 * hour + minute / 2}deg)`;
+            document.getElementById('minute').style.transform = `rotate(${6 * minute}deg)`;
+            document.getElementById('second').style.transform = `rotate(${6 * second}deg)`;
+            */
+            //const canvas = document.getElementById("hour");
+            //const ctx = canvas.getContext("2d");
+            //ctx.translate(70,70);
+            
+            //document.getElementById('hour').style.transform = `translate(70px, 70px)`;
+            
+            //document.getElementById('hour').style.transform = `rotate(${30 * hour + minute / 2}deg)`;
+            document.getElementById('minute').style.transform = `rotate(${6 * minute}deg)`;
+            document.getElementById('second').style.transform = `rotate(${second+tick}deg)`;
+        }
+        setInterval(updateClock, 10);
+        updateClock();
+    </script>
+</body>
+</html>
