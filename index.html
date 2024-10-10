@@ -2,33 +2,141 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - Three.js &amp; Perlin Noise Blob</title>
-  <link rel="stylesheet" href="./style.css">
+  <title>FIGURE_CLOCK_v1</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <style>
+    #clock-container {
+        display: flex;
+        position: absolute;
+        margin: 0;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        z-index: 20;
+    }
+    #clock {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #clock span {
+        position: absolute;
+        transform: rotate(calc(30deg * var(--i)));
+        inset: 12px;
+        text-align: center;
+        font-family: sans-serif;
+    }
+    #clock span i {
+        transform: rotate(calc(-30deg * var(--j)));
+        display: inline-block;
+        font-size: 20px;
+        font-style: normal;
+        text-shadow: 1px 1px 0px rgb(0 0 0 / 25%);
+        color: #000000;
+    }
+    /*
+    #clock::after {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #fff;
+        z-index: 2;
+        opacity: 0.6;
+    } */
+    #clock .hand {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+              
+    }
+    #clock .hand i {
+        position: absolute;
+        background-color: var(--color);
+        width: var(--width);
+        height: var(--height);
+        border-radius: 8px;
+    }
+      
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .canvas-wrapper {
+      z-index: 1;
+      position: absolute;
+      margin: 0;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      /*
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      outline: none;
+      background: #2e2e2e; */
+    }
+    canvas.webgl {
+      pointer-events: none;
+      width: 100%;
+    }
+    .section {
+      width: 100%;
+      height: 100vh;
+    }
+    .section p {
+      margin-left: 20vw;
+      margin-top: 70vh;
+      font-size: 60px;
+      font-weight: bold;
+      
+      }
+  </style>
 
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<div class="canvas-wrapper"></div>
-<div id="fullpage" class="sections">
-  <section class="section active">
-    <p>Section Start</p>
-	</section>
-	<section class="section">
-		<p>Section 1</p>
-	</section>
-	<section class="section">
-		<p>Section 2</p>
-	</section>
-	<section class="section">
-		<p>Section 3</p>
-	</section>
-	<section class="section">
-		<p>Section 4</p>
-	</section>
-	<section class="section">
-		<p>Section 5</p>
-	</section>
-</div>
+
+  <div class="container">
+      <div id="clock-container">
+          <div id="clock">
+              <div id="hour" class="hand" style="--color: #ff3d58; --height: 50px; --width: 22px;"><i></i></div>
+              <div id="minute" class="hand" style="--color: #00a6ff; --height: 60px; --width: 18px"><i></i></div>
+              <div id="second" class="hand" style="--color: #000000; --height: 70px; --width: 12px"><i></i></div>
+              <span style="--i: 1; --j: 0"><i>|</i></span>
+              <span style="--i: 2; --j: 0"><i>|</i></span>
+              <span style="--i: 3; --j: 3"><i>3</i></span>
+              <span style="--i: 4; --j: 0"><i>|</i></span>
+              <span style="--i: 5; --j: 0"><i>|</i></span>
+              <span style="--i: 6; --j: 6"><i>6</i></span>
+              <span style="--i: 7; --j: 0"><i>|</i></span>
+              <span style="--i: 8; --j: 0"><i>|</i></span>
+              <span style="--i: 9; --j: 9"><i>9</i></span>
+              <span style="--i: 10; --j: 0"><i>|</i></span>
+              <span style="--i: 11; --j: 0"><i>|</i></span>
+              <span style="--i: 12; --j: 12"><i>12</i></span>
+          </div>
+      </div>
+  </div>
+  
+  <div class="canvas-wrapper"></div>
+  <div id="fullpage" class="sections">
+    <section class="section"></section>
+      <!--<section class="section"> <p>Section 1</p> </section>
+      <section class="section"> <p>Section 2</p> </section>
+      <section class="section"> <p>Section 3</p> </section>
+      <section class="section"> <p>Section 4</p> </section>
+      <section class="section"> <p>Section 5</p></section> -->
+  </div>
+  
 
 <script type="x-shader/x-vertex" id="vertexShader">
   //
@@ -130,7 +238,7 @@
     vec3 fade_xyz = fade(Pf0);
     vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
     vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-    float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+    float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
     return 2.2 * n_xyz;
   }
 
@@ -199,7 +307,7 @@
     vec3 fade_xyz = fade(Pf0);
     vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
     vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-    float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+    float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
     return 2.2 * n_xyz;
   }
 
@@ -242,7 +350,7 @@
     // To increase the amount of waves, we'll use uFrequency
     // To make the waves bigger we'll use uAmplitude
     float angle = sin(uv.y * uFrequency /*+ t*/) * uAmplitude;
-    pos = rotateY(pos, angle); 
+    pos = rotateY(pos, angle);
 
     vDistort = distortion;
 
@@ -276,9 +384,41 @@
     gl_FragColor = vec4(color, 1.0);
 
   }
+    
 </script>
 <!-- partial -->
-  <script type="module" src="./script.js"></script>
+<script type="module" src="script.js"></script>
 
+  <script>
+      function updateClock() {
+          const now = new Date();
+          const second = now.getSeconds() * 6;
+          const minute = now.getMinutes();
+          const hour = now.getHours();
+          const smooth_scale = 1;
+          const total_millis = now.getTime();
+          const millis  = total_millis % 1000;
+          const tick = millis / 1000.0 * 6.0;
+          const hour_deg = 30 * hour;
+          const min_deg = 6 * minute;
+          const sec_deg = second + tick;
+          const arm_offset = 200;
+          const hour_x = arm_offset * Math.sin(hour_deg * Math.PI/180);
+          const hour_y = -arm_offset * Math.cos(hour_deg * Math.PI/180);
+          const min_x = arm_offset * Math.sin(min_deg * Math.PI/180);
+          const min_y = -arm_offset * Math.cos(min_deg * Math.PI/180);
+          const sec_x = arm_offset * Math.sin(sec_deg * Math.PI/180);
+          const sec_y = -arm_offset * Math.cos(sec_deg * Math.PI/180);
+          
+          document.getElementById('hour').style.transform = `translateX(${hour_x}px) translateY(${hour_y}px) rotate(${hour_deg}deg)`;
+          document.getElementById('minute').style.transform = `translateX(${min_x}px) translateY(${min_y}px) rotate(${min_deg}deg)`;
+          document.getElementById('second').style.transform = `translateX(${sec_x}px) translateY(${sec_y}px) rotate(${sec_deg}deg)`;
+          
+      }
+      setInterval(updateClock, 10);
+      updateClock();
+  </script>
+  
+  
 </body>
 </html>

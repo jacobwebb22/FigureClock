@@ -24,17 +24,17 @@ https://www.w3schools.in/page/copyright -->
            transform: translate(-50%, -50%);
         }
         #clock {
-            width: 800px;
-            height: 800px;
+            width: 600px;
+            height: 600px;
             border-radius: 50%;
             box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
 
-            background-color: #1c2731;
+            /*background-color: #1c2731;*/
             /*background: radial-gradient(ellipse, #506068, #1c2731);*/
-            background: linear-gradient(170deg, rgba(49, 57, 73, 0.8) 20%, rgba(49, 57, 73, 0.5) 20%, rgba(49, 57, 73, 0.5) 35%, rgba(41, 48, 61, 0.6) 35%, rgba(41, 48, 61, 0.8) 45%, rgba(31, 36, 46, 0.5) 45%, rgba(31, 36, 46, 0.8) 75%, rgba(49, 57, 73, 0.5) 75%), linear-gradient(45deg, rgba(20, 24, 31, 0.8) 0%, rgba(41, 48, 61, 0.8) 50%, rgba(82, 95, 122, 0.8) 50%, rgba(133, 146, 173, 0.8) 100%) #313949;
+            /*background: linear-gradient(170deg, rgba(49, 57, 73, 0.8) 20%, rgba(49, 57, 73, 0.5) 20%, rgba(49, 57, 73, 0.5) 35%, rgba(41, 48, 61, 0.6) 35%, rgba(41, 48, 61, 0.8) 45%, rgba(31, 36, 46, 0.5) 45%, rgba(31, 36, 46, 0.8) 75%, rgba(49, 57, 73, 0.5) 75%), linear-gradient(45deg, rgba(20, 24, 31, 0.8) 0%, rgba(41, 48, 61, 0.8) 50%, rgba(82, 95, 122, 0.8) 50%, rgba(133, 146, 173, 0.8) 100%) #313949;*/
         }
         #clock span {
             position: absolute;
@@ -49,7 +49,7 @@ https://www.w3schools.in/page/copyright -->
             font-size: 20px;
             font-style: normal;
             text-shadow: 1px 1px 0px rgb(0 0 0 / 25%);
-            color: #ffffff;
+            color: #000000;
         }
         #clock::after {
             content: '';
@@ -66,6 +66,7 @@ https://www.w3schools.in/page/copyright -->
             display: flex;
             justify-content: center;
             align-items: flex-end;
+            
         }
         #clock .hand i {
             position: absolute;
@@ -82,9 +83,9 @@ https://www.w3schools.in/page/copyright -->
 
         <div id="clock-container">
             <div id="clock">
-                <div id="hour" class="hand" style="--color: #ff3d58; --height: 250px; --width: 22px"><i></i></div>
-                <div id="minute" class="hand" style="--color: #00a6ff; --height: 320px; --width: 18px"><i></i></div>
-                <div id="second" class="hand" style="--color: #ffffff; --height: 380px; --width: 12px"><i></i></div>
+                <div id="hour" class="hand" style="--color: #ff3d58; --height: 50px; --width: 22px;"><i></i></div>
+                <div id="minute" class="hand" style="--color: #00a6ff; --height: 60px; --width: 18px"><i></i></div>
+                <div id="second" class="hand" style="--color: #000000; --height: 70px; --width: 12px"><i></i></div>
                 <span style="--i: 1; --j: 0"><i>|</i></span>
                 <span style="--i: 2; --j: 0"><i>|</i></span>
                 <span style="--i: 3; --j: 3"><i>3</i></span>
@@ -110,21 +111,21 @@ https://www.w3schools.in/page/copyright -->
             const total_millis = now.getTime();
             const millis  = total_millis % 1000;
             const tick = millis / 1000.0 * 6.0;
+            const hour_deg = 30 * hour;
+            const min_deg = 6 * minute;
+            const sec_deg = second + tick;
+            const arm_offset = 200;
+            const hour_x = arm_offset * Math.sin(hour_deg * Math.PI/180);
+            const hour_y = -arm_offset * Math.cos(hour_deg * Math.PI/180);
+            const min_x = arm_offset * Math.sin(min_deg * Math.PI/180);
+            const min_y = -arm_offset * Math.cos(min_deg * Math.PI/180);
+            const sec_x = arm_offset * Math.sin(sec_deg * Math.PI/180);
+            const sec_y = -arm_offset * Math.cos(sec_deg * Math.PI/180);
             
-            /*
-            document.getElementById('hour').style.transform = `rotate(${30 * hour + minute / 2}deg)`;
-            document.getElementById('minute').style.transform = `rotate(${6 * minute}deg)`;
-            document.getElementById('second').style.transform = `rotate(${6 * second}deg)`;
-            */
-            //const canvas = document.getElementById("hour");
-            //const ctx = canvas.getContext("2d");
-            //ctx.translate(70,70);
+            document.getElementById('hour').style.transform = `translateX(${hour_x}px) translateY(${hour_y}px) rotate(${hour_deg}deg)`;
+            document.getElementById('minute').style.transform = `translateX(${min_x}px) translateY(${min_y}px) rotate(${min_deg}deg)`;
+            document.getElementById('second').style.transform = `translateX(${sec_x}px) translateY(${sec_y}px) rotate(${sec_deg}deg)`;
             
-            //document.getElementById('hour').style.transform = `translate(70px, 70px)`;
-            
-            //document.getElementById('hour').style.transform = `rotate(${30 * hour + minute / 2}deg)`;
-            document.getElementById('minute').style.transform = `rotate(${6 * minute}deg)`;
-            document.getElementById('second').style.transform = `rotate(${second+tick}deg)`;
         }
         setInterval(updateClock, 10);
         updateClock();
